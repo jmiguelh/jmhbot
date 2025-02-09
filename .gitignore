@@ -13,3 +13,4 @@ wheels/
 
 /imagens
 *.session
+*.session-journal
