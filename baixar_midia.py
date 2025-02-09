@@ -58,11 +58,8 @@ async def search_and_download(group_name, hashtag):
 
 
 if __name__ == "__main__":
-    # group = input("Digite o nome ou ID do grupo: ")
-    # hashtag = input("Digite a hashtag a ser buscada: ")
+    group = input("Digite o nome ou ID do grupo: ")
+    hashtag = input("Digite a hashtag a ser buscada: ")
 
     with client:
-        client.loop.run_until_complete(
-            search_and_download(-1002344597770, "#SARAHCAUS")
-        )
-        # -1002344597770
+        client.loop.run_until_complete(search_and_download(int(group), hashtag))
