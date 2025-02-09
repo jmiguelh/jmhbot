@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from telethon import TelegramClient
 from telethon.tl.types import MessageMediaPhoto, DocumentAttributeVideo
 from dotenv import load_dotenv
@@ -65,16 +65,19 @@ async def download_all_media(message):
 
 
 def save_last_message_date(date):
-    """Salva a data/hora da última mensagem processada."""
+    """Salva a data/hora da última mensagem processada (em UTC)."""
     with open(last_message_file, "w") as f:
-        f.write(date.strftime("%Y-%m-%d %H:%M:%S"))
+        f.write(date.astimezone(timezone.utc).strftime("%Y-%m-%d %H:%M:%S"))
 
 
 def load_last_message_date():
-    """Carrega a última data/hora processada."""
+    """Carrega a última data/hora processada (como UTC)."""
     if os.path.exists(last_message_file):
         with open(last_message_file, "r") as f:
-            return datetime.strptime(f.read().strip(), "%Y-%m-%d %H:%M:%S")
+            last_date = datetime.strptime(f.read().strip(), "%Y-%m-%d %H:%M:%S")
+            return last_date.replace(
+                tzinfo=timezone.utc
+            )  # Converte para timezone-aware
     return None  # Se não houver registro, retorna None
 
 
