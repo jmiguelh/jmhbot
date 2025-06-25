@@ -1,6 +1,5 @@
 import os
 from datetime import UTC, datetime
-from pathlib import Path
 
 from dotenv import load_dotenv
 from telethon import TelegramClient
@@ -23,7 +22,7 @@ output_folder = "imagens"
 last_message_file = "ultimo_processamento.txt"
 
 # Certifique-se de que a pasta existe
-Path.os.makedirs(output_folder, exist_ok=True)
+os.makedirs(output_folder, exist_ok=True)
 
 # Inicializa o cliente do Telegram
 client = TelegramClient(session_name, api_id, api_hash)
@@ -90,14 +89,14 @@ async def download_all_media(message):
 
 def save_last_message_date(date):
     """Salva a data/hora da última mensagem processada (em UTC)."""
-    with Path.open(last_message_file, "w") as f:
+    with open(last_message_file, "w") as f:
         f.write(date.astimezone(UTC).strftime("%Y-%m-%d %H:%M:%S"))
 
 
 def load_last_message_date():
     """Carrega a última data/hora processada (como UTC)."""
-    if Path.exists(last_message_file):
-        with Path.open(last_message_file) as f:
+    if  os.path.exists(last_message_file):
+        with open(last_message_file) as f:
             last_date = datetime.strptime(f.read().strip(), "%Y-%m-%d %H:%M:%S")
             return last_date.replace(tzinfo=UTC)  # Converte para timezone-aware
     return None  # Se não houver registro, retorna None
